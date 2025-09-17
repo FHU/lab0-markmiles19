@@ -77,7 +77,6 @@ export default function HomeScreen() {
     return false;
   }
 
-  // Look into removing any excess zeros.
   const isArmstrong = (num: number | null): boolean => {
     if (num === null || num < 0) return false;
     const digits = num.toString().split("").map(Number);
@@ -94,6 +93,34 @@ export default function HomeScreen() {
     if (day / month === year) return true;
     if (Math.pow(day, month) === year) return true;
     return false;
+  }
+
+  const hexFormat = (day: number | null, month: number | null, year: number | null, order: "DMY" | "MDY"): string => {
+    if (day !== null && month !== null && year !== null){
+      const yyNum = year % 100;
+      const dd = day.toString().padStart(2, "0");
+      const mm = month.toString().padStart(2, "0");
+      const yy = yyNum.toString().padStart(2, "0");
+
+      return order === "DMY"
+        ? `#${dd}${mm}${yy}`
+        : `#${mm}${dd}${yy}`
+    }
+    return "#??????";
+  }
+
+  const hslFormat = (day: number | null, month: number | null, year: number | null, order: "DMY" | "MDY"): string => {
+    if (day !== null && month !== null && year !== null) {
+      const yyNum = year % 100;
+      const dd = day.toString().padStart(2, "0");
+      const mm = month.toString().padStart(2, "0");
+      const yy = yyNum.toString().padStart(2, "0");
+
+      return order === "DMY"
+        ? `hsl(${dd}, ${mm}%, ${yy}%)`
+        : `hsl(${mm}, ${dd}%, ${yy}%)`
+    }
+    return "hsl(??, ??%, ??%)";
   }
 
   useEffect(() => {
@@ -173,12 +200,26 @@ export default function HomeScreen() {
         </ThemedText>
       </ThemedView><ThemedView style={styles.stepContainer}>
         <ThemedText type="subtitle">Colors:</ThemedText>
-        <ThemedText>
-          {/* Implement feature for #MMDDYYYY and hsl(MM, DD%, YY%) to show in the
-          actual color it's representing, and show only question marks in black otherwise. */}
-          {`#??????\n#??????\n`}
-          {`hsl(??, ??%, ??%)\nhsl(??, ??%, ??%)\n`}
-        </ThemedText>
+        <ThemedText style = {{
+          color: hexFormat(day, month, year, "MDY") !== "#??????"
+            ? `${hexFormat(day, month, year, "MDY")}`
+            : "black" }}>
+          {`${hexFormat(day, month, year, "MDY")}`}</ThemedText>
+        <ThemedText style = {{
+          color: hexFormat(day, month, year, "DMY") !== "#??????"
+            ? `${hexFormat(day, month, year, "DMY")}`
+            : "black" }}>
+          {`${hexFormat(day, month, year, "DMY")}`}</ThemedText>
+        <ThemedText style = {{
+          color: hexFormat(day, month, year, "MDY") !== "hsl(??, ??%, ??%)"
+            ? `${hslFormat(day, month, year, "MDY")}`
+            : "black" }}>
+          {`${hslFormat(day, month, year, "MDY")}`}</ThemedText>
+        <ThemedText style = {{
+          color: hexFormat(day, month, year, "DMY") !== "hsl(??, ??%, ??%)"
+            ? `${hslFormat(day, month, year, "DMY")}`
+            : "black" }}>
+          {`${hslFormat(day, month, year, "DMY")}`}</ThemedText>
       </ThemedView>
     </ParallaxScrollView>
   );

@@ -21,7 +21,7 @@ export default function TabTwoScreen() {
       <ThemedView style={styles.titleContainer}>
         <ThemedText type="title">Patterns</ThemedText>
       </ThemedView>
-      <ThemedText>This app includes example code to help you get started.</ThemedText>
+      <ThemedText>Take a look below to get familiar with all of the different features this app will be able to detect based on your date.</ThemedText>
       <Collapsible title="Prime">
         <ThemedText>
           If the date you entered can only be divided by 1 or itself, it would be a prime number.
