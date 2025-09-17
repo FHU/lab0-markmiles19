@@ -35,11 +35,11 @@ export default function HomeScreen() {
   }
 
   const convertDate = (year: number | null, month: number | null, day: number | null): number | null => {
-  if (year && month && day !== null) {
-    const value = (month * 1000000) + (day * 10000) + year
-    return value;
-  }
-  return null;
+    if (year && month && day !== null) {
+      const valueStr = String(month) + String(day) + String(year)
+      return Number(valueStr);
+    }
+    return null;
   };
 
   const isPrime = (num: number | null): boolean => {
