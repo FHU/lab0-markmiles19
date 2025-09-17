@@ -35,7 +35,7 @@ export default function HomeScreen() {
   }
 
   const convertDate = (year: number | null, month: number | null, day: number | null): number | null => {
-  if (year && month && day) {
+  if (year && month && day !== null) {
     const value = (month * 1000000) + (day * 10000) + year
     return value;
   }
@@ -54,23 +54,46 @@ export default function HomeScreen() {
   }
 
   const isPalindrome = (num: number | null): boolean => {
-    return false
+    if (num === null) return false;
+    const str = num.toString();
+    return str === str.split("").reverse().join("");
   }
 
-  const isPythagorean = (num: number | null): boolean => {
-    return false
+  const isPythagorean = (day: number | null, month: number | null, year: number | null): boolean => {
+    if (day === null || month === null || year === null) return false;
+    return ((day * day) + (month * month)) === (year * year);
   }
 
   const isPerfectPower = (num: number | null): boolean => {
-    return false
+    if (num === null || num <= 1) return false;
+    const maxExponent = Math.floor(Math.log2(num))
+
+    for (let exp = 2; exp <= maxExponent; exp++) {
+      const root = Math.round(Math.pow(num, 1 / exp));
+      if (Math.pow(root, exp) === num) {
+        return true;
+      }
+    }
+    return false;
   }
 
+  // Look into removing any excess zeros.
   const isArmstrong = (num: number | null): boolean => {
-    return false
+    if (num === null || num < 0) return false;
+    const digits = num.toString().split("").map(Number);
+    const numDigits = digits.length;
+    const sum = digits.reduce((acc, digit) => acc + Math.pow(digit, numDigits), 0);
+    return sum === num;
   }
 
-  const isEquation = (num: number | null): boolean => {
-    return false
+  const isEquation = (day: number | null, month: number | null, year: number | null): boolean => {
+    if (day === null || month === null || year === null) return false;
+    if (day + month === year) return true;
+    if (day - month === year) return true;
+    if (day * month === year) return true;
+    if (day / month === year) return true;
+    if (Math.pow(day, month) === year) return true;
+    return false;
   }
 
   useEffect(() => {
@@ -78,10 +101,10 @@ export default function HomeScreen() {
     if (value !== null) {
       setIsPrimeNum(isPrime(value));
       setIsPalindromeNum(isPalindrome(value));
-      setIsPythagNum(isPythagorean(value));
+      setIsPythagNum(isPythagorean(month, day, year));
       setIsPerfectNum(isPerfectPower(value));
       setIsArmstrongNum(isArmstrong(value));
-      setIsEquationNum(isEquation(value));
+      setIsEquationNum(isEquation(day, month, year));
       //Hex placeholder
       //HSL placeholder
     } else {
@@ -151,8 +174,10 @@ export default function HomeScreen() {
       </ThemedView><ThemedView style={styles.stepContainer}>
         <ThemedText type="subtitle">Colors:</ThemedText>
         <ThemedText>
-          {`Hex: \n`}
-          {`HSL: \n`}
+          {/* Implement feature for #MMDDYYYY and hsl(MM, DD%, YY%) to show in the
+          actual color it's representing, and show only question marks in black otherwise. */}
+          {`#??????\n#??????\n`}
+          {`hsl(??, ??%, ??%)\nhsl(??, ??%, ??%)\n`}
         </ThemedText>
       </ThemedView>
     </ParallaxScrollView>
