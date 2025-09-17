@@ -1,5 +1,5 @@
 import { Image } from 'expo-image';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { StyleSheet, TextInput, View } from 'react-native';
 
 import { HelloWave } from '@/components/HelloWave';
@@ -11,6 +11,13 @@ export default function HomeScreen() {
   const [day, setDay] = useState<number | null >(null);
   const [month, setMonth] = useState<number | null >(null);
   const [year, setYear] = useState<number | null >(null);
+
+  const [isPrimeNum, setIsPrimeNum] = useState(false);
+  const [isPalindromeNum, setIsPalindromeNum] = useState(false);
+  const [isPythagNum, setIsPythagNum] = useState(false);
+  const [isPerfectNum, setIsPerfectNum] = useState(false);
+  const [isArmstrongNum, setIsArmstrongNum] = useState(false);
+  const [isEquationNum, setIsEquationNum] = useState(false);
 
   const checkNum = (
     text: string,
@@ -25,8 +32,69 @@ export default function HomeScreen() {
     } else {
       setter(null);
     }
-
   }
+
+  const convertDate = (year: number | null, month: number | null, day: number | null): number | null => {
+  if (year && month && day) {
+    const value = (month * 1000000) + (day * 10000) + year
+    return value;
+  }
+  return null;
+  };
+
+  const isPrime = (num: number | null): boolean => {
+    if (num === null || num <= 1) return false;
+    if (num <= 3) return true;
+    if (num % 2 === 0 || num % 3 === 0) return false;
+
+    for (let i = 5; i * i <= num; i += 6) {
+      if (num % i === 0 || num % (i + 2) === 0) return false;
+    }
+    return true;
+  }
+
+  const isPalindrome = (num: number | null): boolean => {
+    return false
+  }
+
+  const isPythagorean = (num: number | null): boolean => {
+    return false
+  }
+
+  const isPerfectPower = (num: number | null): boolean => {
+    return false
+  }
+
+  const isArmstrong = (num: number | null): boolean => {
+    return false
+  }
+
+  const isEquation = (num: number | null): boolean => {
+    return false
+  }
+
+  useEffect(() => {
+    const value = convertDate(year, month, day);
+    if (value !== null) {
+      setIsPrimeNum(isPrime(value));
+      setIsPalindromeNum(isPalindrome(value));
+      setIsPythagNum(isPythagorean(value));
+      setIsPerfectNum(isPerfectPower(value));
+      setIsArmstrongNum(isArmstrong(value));
+      setIsEquationNum(isEquation(value));
+      //Hex placeholder
+      //HSL placeholder
+    } else {
+      setIsPrimeNum(false);
+      setIsPalindromeNum(false);
+      setIsPythagNum(false);
+      setIsPerfectNum(false);
+      setIsArmstrongNum(false);
+      setIsEquationNum(false);
+      //Hex fallback placeholder
+      //HSL fallback placeholder
+    }
+  }, [year, month, day]);
 
   return (
     <ParallaxScrollView
@@ -73,12 +141,12 @@ export default function HomeScreen() {
       <ThemedView style={styles.stepContainer}>
         <ThemedText type="subtitle">Results:</ThemedText>
         <ThemedText>
-          {`Prime: \n`}
-          {`Palindrome: \n`}
-          {`Pythagorean: \n`}
-          {`Perfect Power: \n`}
-          {`Narcissistic/Armstrong: \n`}
-          {`Equation: \n`}
+          {`Prime: ${isPrimeNum ? "✅" : "❌"}\n`}
+          {`Palindrome: ${isPalindromeNum ? "✅" : "❌"}\n`}
+          {`Pythagorean: ${isPythagNum ? "✅" : "❌"}\n`}
+          {`Perfect Power: ${isPerfectNum ? "✅" : "❌"}\n`}
+          {`Narcissistic/Armstrong: ${isArmstrongNum ? "✅" : "❌"}\n`}
+          {`Equation: ${isEquationNum ? "✅" : "❌"}\n`}
         </ThemedText>
       </ThemedView><ThemedView style={styles.stepContainer}>
         <ThemedText type="subtitle">Colors:</ThemedText>
@@ -102,7 +170,7 @@ const styles = StyleSheet.create({
   titleContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
+    gap: 8
   },
   inputContainer: {
     borderColor: "gray",
@@ -112,6 +180,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 4,
     height: 40,
     backgroundColor: "white",
+    borderRadius: 20
   },
   rowContainer: {
     flexDirection: "row",
@@ -126,7 +195,7 @@ const styles = StyleSheet.create({
     width: 60,
   },
   yearContainer: {
-    width: 120,
+    width: 90,
   },
   stepContainer: {
     gap: 8,
